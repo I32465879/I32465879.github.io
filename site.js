@@ -130,12 +130,6 @@ const fetchCard = async () => {
     
   }
 
-  attachEventListeners(document.getElementById('frank'))
-
-
-
-
-
 
 
   let selecting = false;
