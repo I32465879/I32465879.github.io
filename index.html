@@ -1,0 +1,122 @@
+<head>
+  <style>
+.draggable-resizable {
+  position: absolute;
+  display: inline-block;
+  width: 300px;
+  height: 3cap;
+  cursor: move;
+  border-radius:15px;
+  overflow: hidden;
+  transform-origin: center center;
+}
+
+.draggable-resizable img {
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+  border-radius:15px;
+}
+
+.resize-icon{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid #000;
+  cursor: pointer;
+}
+
+.resize-icon {
+  right: 0;
+  bottom: 0;
+  cursor: se-resize;
+}
+
+.selection-area {
+    position: absolute;
+    border: 2px dotted #000;
+    background-color: rgba(0,0,0,0.1); /* Optional: gives a slight background tint */
+    pointer-events: none; /* This ensures the div doesn't interfere with mouse events */
+}
+
+img {
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+}
+
+.counter-div {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    text-align: center;
+}
+
+.counter {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+.counter-div button {
+    background-color: #f5f5f5;
+    border: 1px solid #d4d4d4;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.counter-div button:hover {
+    background-color: #e5e5e5;
+}
+
+
+.menuCounter{
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2px 5px;
+    font-weight: bold;
+}
+.menuCounterButton{
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2px 5px;
+    font-weight: bold;
+    border-radius: 3px;
+}
+.menuCounter-div {
+    bottom: 20px;
+    left: 50%;
+    display: flex;
+    text-align: center;
+}
+
+  </style>
+</head>
+<body>
+
+<a href="#" id="newcard">New card</a>
+<button id="multi-select-button">Multi-Select</button>
+
+      <div id="frank" class="draggable-resizable">
+        <img id="targetImage" src="7ed-319-static-orb.jpg" alt="Your Image" draggable="false">
+        <div class="resize-icon"></div>
+      </div>
+
+      <div id="menu-bar" style="display: block; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); background-color: #333; padding: 10px; box-shadow: 0px -2px 5px rgba(0,0,0,0.5);">
+        <button id="tap-button" style="display: inline-block;">Tap</button>
+        
+        <div class="menuCounter-div" style="display: inline-flex;">
+            <button class="menuCounterButton" id="global-decrement-button">-</button>
+            <div class="menuCounter">1/1</div>
+            <button class="menuCounterButton" id="global-increment-button">+</button>
+        </div>
+    </div>
+    
+
+<script src="site.js"></script>
+</body>
