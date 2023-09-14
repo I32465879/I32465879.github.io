@@ -1,8 +1,6 @@
 <html><head>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
-    
+  <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.18/dist/interact.min.js"></script>    
   <style>
 .draggable-resizable {
   position: absolute;
@@ -13,6 +11,7 @@
   border-radius:15px;
   overflow: hidden;
   transform-origin: center center;
+  padding: 20px;
 }
 
 .draggable-resizable img {
@@ -97,6 +96,23 @@ img {
     left: 50%;
     display: flex;
     text-align: center;
+}
+.icon-menu {
+    display: flex;
+    justify-content: center;
+}
+
+.icon-menu button {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    background-color: #eee;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.icon-menu button:hover {
+    background-color: #ddd;
 }
 
   </style>

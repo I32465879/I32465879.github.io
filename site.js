@@ -1,82 +1,165 @@
 $(document).ready(function () {
 
-    $('#newcard').on('click', function(e) {
-        e.preventDefault();
-        showNewCard();
+  $('#newcard').on('click', function (e) {
+    e.preventDefault();
+    showNewCard();
+  });
+
+  let currentZIndex = 0;
+
+  function attachEventListeners(card) {
+    let isRotated = false;
+
+    const position = { x: 0, y: 0 };
+
+
+    interact(card)
+      .draggable({
+        listeners: {
+          move(event) {
+            position.x += event.dx;
+            position.y += event.dy;
+
+            // Use top and left for positioning
+            event.target.style.left = `${position.x}px`;
+            event.target.style.top = `${position.y}px`;
+          },
+
+          start(event) {
+            // Increase the z-index and assign to the element when it's clicked/dragged
+            currentZIndex++;
+            event.target.style.zIndex = currentZIndex;
+          }
+        }
+      })
+      .resizable({
+        edges: { bottom: true, right: true },
+        listeners: {
+          move: function (event) {
+            let x = (parseFloat(event.target.style.left) || 0) + event.deltaRect.left;
+            let y = (parseFloat(event.target.style.top) || 0) + event.deltaRect.top;
+
+            Object.assign(event.target.style, {
+              width: `${event.rect.width}px`,
+              height: `${event.rect.height}px`,
+              left: `${x}px`,
+              top: `${y}px`
+            });
+          }
+        },
+        modifiers: [
+          interact.modifiers.aspectRatio({
+            ratio: 'preserve',
+            modifiers: [
+              interact.modifiers.restrictSize({ max: 'parent' }),
+            ]
+          })
+        ]
+      });
+
+   
+
+
+    $(card).on('dblclick', function () {
+      tap($(this))
+    });
+  }
+
+  function tap($card) {
+    const currentScale = parseFloat($card.css("transform").split(',')[3]) || 1;
+    const isRotated = $card.attr('data-rotated') === 'true';
+
+    // Continue to rotate the card as per the original behavior
+    $card.css({
+      'transition': 'transform 0.3s',
+      'transform': isRotated ? `scale(${currentScale})` : `scale(${currentScale}) rotate(90deg)`
     });
 
-    function attachEventListeners($card) {
-        let isRotated = false;
+    // Get the icon-menu inside the card
+    const $iconMenu = $card.find('.icon-menu');
 
-        // Make card draggable
-        $card.draggable();
+    // Move and rotate the icon-menu
+    $iconMenu.css({
+      'transition': 'transform 0.3s',
+      'transform-origin': 'top left',
+      'transform': isRotated ? 'rotate(0deg) translateY(0)' : 'rotate(-90deg) translateY(-100%)'
+    });
 
-        // Make card resizable using the bottom right corner
-        $card.resizable({
-            handles: {
-                'se': $card.find('.resize-icon')
-            }
-        });
+    $card.attr('data-rotated', !isRotated);
+}
 
-        $card.on('dblclick', function() {
-            const currentScale = parseFloat($card.css("transform").split(',')[3]) || 1;
-            isRotated = $card.attr('data-rotated') === 'true';
-            
-            $card.css({
-                'transition': 'transform 0.3s',
-                'transform': isRotated ? `scale(${currentScale})` : `scale(${currentScale}) rotate(90deg)`
-            });
-
-            $card.attr('data-rotated', !isRotated);
-        });
-    }
-
-
-
-// Display promise errors
-const handleErrors = (err) => {
+  const handleErrors = (err) => {
     console.log('Oh no, something went wrong!');
     console.log(err);
   };
 
-  
-const fetchCard = async () => {
+  const fetchCard = async () => {
     const res = await fetch("https://api.scryfall.com/cards/random?q=is%3Acommander");
     const data = await res.json();
     return data;
   };
-  
+
   const showCard = async (card) => {
-  // Create the new card
-  const newCard = document.createElement('div');
-  newCard.classList.add('draggable-resizable');
+    const newCard = document.createElement('div');
+    newCard.classList.add('draggable-resizable');
+    newCard.style.position = 'absolute'; // To allow the usage of top and left properties
 
-  // Optionally add an image or other contents to the card here
-  const img = document.createElement('img');
-  img.src = card.image_uris.normal; // replace with your image path
-  img.alt = 'Your Image';
-  img.draggable = false;
 
-  const resizeIcon = document.createElement('div');
-  resizeIcon.classList.add('resize-icon');
 
-  newCard.appendChild(img);
-  newCard.appendChild(resizeIcon);
-  
-  document.body.appendChild(newCard);
+    const img = document.createElement('img');
+    img.src = `${Math.floor(Math.random() * (9 - 0 + 1)) + 0}.jpg`;
+    img.alt = 'Your Image';
+    img.draggable = false;
 
-  // Hook up the event listeners to the new card
-  attachEventListeners($(newCard));
+
+    newCard.appendChild(img);
+
+    const menu = document.createElement('div');
+    menu.classList.add('icon-menu');
+    menu.style.opacity = '0';  // Initially hidden
+    menu.style.transition = 'opacity 0.3s';  // Fade effect
+
+    const btnTap = document.createElement('button');
+    btnTap.innerText = 'tap';
+    menu.appendChild(btnTap);
+    btnTap.addEventListener('click', function() {
+      tap($(this).closest('.draggable-resizable'))
+  });
+
+    const btnCopy = document.createElement('button');
+    btnCopy.innerText = 'copy';
+    menu.appendChild(btnCopy);
+
+    const btnKill = document.createElement('button');
+    btnKill.innerText = 'kill';
+    menu.appendChild(btnKill);
+    
+btnKill.addEventListener('click', function() {
+  document.body.removeChild(newCard);
+});
+    
+    newCard.appendChild(menu);
+    newCard.addEventListener('click', function(e) {
+      currentZIndex++;
+      this.style.zIndex = currentZIndex;
+      
+      // Toggle menu visibility
+      menu.style.opacity = (menu.style.opacity === '0' ? '1' : '0');
+      
+      e.stopPropagation();  // To prevent the global click listener from hiding the menu immediately
+  });
+    document.body.appendChild(newCard);
+    attachEventListeners(newCard);
   };
-  
+
   const getNewCard = async () => {
-    const newCard = await fetchCard().catch(handleErrors);
+    // const newCard = await fetchCard().catch(handleErrors);
+    let newCard = ''
     await showCard(newCard).catch(handleErrors);
   };
-  
+
   const showNewCard = async () => {
     await getNewCard();
-    
   }
 
-})
+});
