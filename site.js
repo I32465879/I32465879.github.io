@@ -1,5 +1,11 @@
 $(document).ready(function () {
 
+  $('body').on('click', function (e) {
+    if (e.target === this) {
+      $('.icon-menu').css('opacity', '0');
+    }
+  });
+
   $('#newcard').on('click', function (e) {
     e.preventDefault();
     showNewCard();
@@ -55,18 +61,9 @@ $(document).ready(function () {
             ]
           })
         ]
-      }).gesturable({
-        onstart: function (event) {
-            scale = parseFloat(scaleElement.getAttribute('data-scale'));
-        },
-        onmove: function (event) {
-            scale = scale * (1 + event.ds);
-            scaleElement.style.transform = 'scale(' + scale + ')';
-            scaleElement.setAttribute('data-scale', scale);
-        }
-    });
+      });
 
-   
+
 
 
     $(card).on('dblclick', function () {
@@ -89,13 +86,13 @@ $(document).ready(function () {
 
     // Move and rotate the icon-menu
     $iconMenu.css({
-      'transition': 'transform 0.3s',
       'transform-origin': 'top left',
-      'transform': isRotated ? 'rotate(0deg) translateY(0)' : 'rotate(-90deg) translateY(-100%)'
+      'transform': isRotated ? 'rotate(0deg) translateY(0)' : `rotate(-90deg) translateY(${($card.width())}px)`,
+      'width': isRotated ? '100%' : `${($card.height() - $iconMenu.height())}px`
     });
 
     $card.attr('data-rotated', !isRotated);
-}
+  }
 
   const handleErrors = (err) => {
     console.log('Oh no, something went wrong!');
@@ -129,34 +126,38 @@ $(document).ready(function () {
     menu.style.transition = 'opacity 0.3s';  // Fade effect
 
     const btnTap = document.createElement('button');
-    btnTap.innerText = 'tap';
+    btnTap.innerText = '⤵';
     menu.appendChild(btnTap);
-    btnTap.addEventListener('click', function() {
+    btnTap.addEventListener('click', function () {
       tap($(this).closest('.draggable-resizable'))
-  });
+    });
 
     const btnCopy = document.createElement('button');
-    btnCopy.innerText = 'copy';
+    btnCopy.innerText = 'Clone';
     menu.appendChild(btnCopy);
 
+    btnCopy.addEventListener('click', function () {
+      document.body.removeChild(newCard);
+    });
+
     const btnKill = document.createElement('button');
-    btnKill.innerText = 'kill';
+    btnKill.innerText = '💀';
     menu.appendChild(btnKill);
-    
-btnKill.addEventListener('click', function() {
-  document.body.removeChild(newCard);
-});
-    
+
+    btnKill.addEventListener('click', function () {
+      document.body.removeChild(newCard);
+    });
+
     newCard.appendChild(menu);
-    newCard.addEventListener('click', function(e) {
+    newCard.addEventListener('click', function (e) {
       currentZIndex++;
       this.style.zIndex = currentZIndex;
-      
+
       // Toggle menu visibility
-      menu.style.opacity = (menu.style.opacity === '0' ? '1' : '0');
-      
+      menu.style.opacity = 1;//(menu.style.opacity === '0' ? '1' : '0');
+
       e.stopPropagation();  // To prevent the global click listener from hiding the menu immediately
-  });
+    });
     document.body.appendChild(newCard);
     attachEventListeners(newCard);
   };
