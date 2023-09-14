@@ -55,7 +55,16 @@ $(document).ready(function () {
             ]
           })
         ]
-      });
+      }).gesturable({
+        onstart: function (event) {
+            scale = parseFloat(scaleElement.getAttribute('data-scale'));
+        },
+        onmove: function (event) {
+            scale = scale * (1 + event.ds);
+            scaleElement.style.transform = 'scale(' + scale + ')';
+            scaleElement.setAttribute('data-scale', scale);
+        }
+    });
 
    
 
