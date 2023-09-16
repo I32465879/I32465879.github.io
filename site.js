@@ -6,7 +6,7 @@ $(document).ready(function () {
     }
   });
 
-  $('#newcard').on('click touch', function (e) {
+  $('#newcard').on('click touchstart', function (e) {
     e.preventDefault();
     showNewCard();
   });
