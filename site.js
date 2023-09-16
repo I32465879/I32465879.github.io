@@ -8,7 +8,7 @@ $(document).ready(function () {
   });
 
  $('body').on('click touchstart', '#newcard2', function() { 
-  e.preventDefault();
+
     showNewCard();
    alert('2')
 }); 
