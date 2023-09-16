@@ -1,22 +1,18 @@
 $(document).ready(function () {
 
-  $('body').on('click', function (e) {
+  /*$('body').on('click', function (e) {
     if (e.target === this) {
       $('.icon-menu').css('opacity', '0');
     }
-    alert('1')
-  });
+  });*/
 
  $('body').on('click touchstart', '#newcard2', function() { 
-
     showNewCard();
-   alert('2')
 }); 
   
   $('#newcard').on('click touchstart', function (e) {
     e.preventDefault();
     showNewCard();
-   alert('3')
     
   });
 
