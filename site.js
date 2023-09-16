@@ -6,6 +6,11 @@ $(document).ready(function () {
     }
   });
 
+ $(body).on('click touchstart', '#newcard', function() { 
+  e.preventDefault();
+    showNewCard();
+}); 
+  
   $('#newcard').on('click touchstart', function (e) {
     e.preventDefault();
     showNewCard();
