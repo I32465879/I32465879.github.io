@@ -176,7 +176,9 @@ $(document).ready(function () {
   const showNewCard = async () => {
     await getNewCard();
   }
-$('#newcard').click();
-$('#newcard').click();
-$('#newcard').click();
+ showNewCard(); 
+  showNewCard(); 
+  showNewCard();
+  showNewCard();
+  showNewCard();
 });
