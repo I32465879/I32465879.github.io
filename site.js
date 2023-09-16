@@ -4,16 +4,20 @@ $(document).ready(function () {
     if (e.target === this) {
       $('.icon-menu').css('opacity', '0');
     }
+    alert('1')
   });
 
  $('body').on('click touchstart', '#newcard2', function() { 
   e.preventDefault();
     showNewCard();
+   alert('2')
 }); 
   
   $('#newcard').on('click touchstart', function (e) {
     e.preventDefault();
     showNewCard();
+   alert('3')
+    
   });
 
   let currentZIndex = 0;
