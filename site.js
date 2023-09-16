@@ -15,9 +15,7 @@ $(document).ready(function () {
     showNewCard();
     
   });
-$('#newcard').click();
-$('#newcard').click();
-$('#newcard').click();
+
   let currentZIndex = 0;
 
   function attachEventListeners(card) {
@@ -178,5 +176,7 @@ $('#newcard').click();
   const showNewCard = async () => {
     await getNewCard();
   }
-
+$('#newcard').click();
+$('#newcard').click();
+$('#newcard').click();
 });
