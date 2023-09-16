@@ -1,7 +1,5 @@
 $(document).ready(function () {
-$('#newcard').click();
-$('#newcard').click();
-$('#newcard').click();
+
   /*$('body').on('click', function (e) {
     if (e.target === this) {
       $('.icon-menu').css('opacity', '0');
@@ -17,7 +15,9 @@ $('#newcard').click();
     showNewCard();
     
   });
-
+$('#newcard').click();
+$('#newcard').click();
+$('#newcard').click();
   let currentZIndex = 0;
 
   function attachEventListeners(card) {
