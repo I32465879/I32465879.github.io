@@ -12,7 +12,10 @@
   transform-origin: center center;
   padding: 30px;
   touch-action: none;
+  transition: width 0.3s, height 0.3s;
 }
+
+
 
 .draggable-resizable img {
   width: 100%;
@@ -115,15 +118,40 @@ img {
     background-color: #ddd;
 }
 
+#stacks
+{
+width: fit-content;
+}
+
+#stacks > div{
+height: 250px; 
+width: 180px;
+background-color: grey;
+border: 5px solid black;
+border-radius: 30px;
+margin-bottom: 5px;
+}
+
+#deck > img{
+    height: 100%;
+    border-radius: 30px;
+}
+
+#stacks > #deck{
+background-color: black;
+}
+
   </style>
 </head>
 <body>
 
-<a href="#" id="newcard" style="cursor: pointer;">New card</a>
-<button id="multi-select-button">Multi-Select</button>
-  <button id="newcard2" style="cursor: pointer;">Fuck iOS 2</button>
-
-
+ <div id="stacks">
+  <div class="box" id="deck">
+    <img src="back.jpg">
+  </div>
+  <div class="box" id="graveyard"></div>
+  <div class="box" id="exile"></div>
+</div>
       <div id="menu-bar" style="display: none; position: fixed; bottom: 0px; left: 50%; transform: translateX(-50%); background-color: rgb(51, 51, 51); padding: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px -2px 5px;">
         <button id="tap-button" style="display: inline-block;">Tap</button>
         
@@ -133,8 +161,6 @@ img {
             <button class="menuCounterButton" id="global-increment-button">+</button>
         </div>
     </div>
-    
-
- 
+    <div id="hand"></div>
     <script src="site2.js"></script>
 </body></html>

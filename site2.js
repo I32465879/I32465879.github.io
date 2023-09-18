@@ -1,21 +1,49 @@
 $(document).ready(function () {
 
-  /*$('body').on('click', function (e) {
+  $('body').on('click', function (e) {
     if (e.target === this) {
       $('.icon-menu').css('opacity', '0');
     }
-  });*/
+  });
 
- $('body').on('click touchstart', '#newcard2', function() { 
-    showNewCard();
-}); 
   
-  $('#newcard').on('click touchstart', function (e) {
+  $('#deck').on('dblclick', function (e) {
     e.preventDefault();
     showNewCard();
     
   });
 
+
+  interact('#graveyard')
+  .dropzone({
+    overlap: 0.10,
+    ondragenter: function (event) {
+      if (!event.relatedTarget.classList.contains('in-dropzone')) {
+        originalSize.height = event.relatedTarget.getBoundingClientRect().height;
+        originalSize.width = event.relatedTarget.getBoundingClientRect().width;
+    
+        const dropzoneRect = event.target.getBoundingClientRect();
+        event.relatedTarget.style.width = `${dropzoneRect.width}px`;
+        event.relatedTarget.style.height = `${dropzoneRect.height}px`;
+        event.relatedTarget.classList.add('in-dropzone');
+    }
+    
+    },
+    ondragleave: function(event) {
+        event.relatedTarget.style.width = `${originalSize.width}px`;
+        event.relatedTarget.style.height = `${originalSize.height}px`;
+        event.relatedTarget.classList.remove('in-dropzone');
+    },
+    ondrop: function (event) {
+      dropzoneRect = event.target.getBoundingClientRect();
+
+      event.relatedTarget.style.left = `${event.target.getBoundingClientRect().x-30}px`;
+      event.relatedTarget.style.top = `${event.target.getBoundingClientRect().y-30}px`;
+    }
+});
+
+
+  let originalSize = { width: 0, height: 0 };
   let currentZIndex = 0;
 
   function attachEventListeners(card) {
@@ -28,14 +56,15 @@ $(document).ready(function () {
       .draggable({
         listeners: {
           move(event) {
-            position.x += event.dx;
-            position.y += event.dy;
-
             // Use top and left for positioning
-            event.target.style.left = `${position.x}px`;
-            event.target.style.top = `${position.y}px`;
+            event.target.style.left = `${event.target.getBoundingClientRect().x + event.dx}px`;
+            event.target.style.top = `${event.target.getBoundingClientRect().y + event.dy}px`;
           },
-
+          onstart: function(event) {
+            const rect = event.target.getBoundingClientRect();
+            originalSize.width = rect.width;
+            originalSize.height = rect.height;
+        },
           start(event) {
             // Increase the z-index and assign to the element when it's clicked/dragged
             currentZIndex++;
@@ -115,7 +144,8 @@ $(document).ready(function () {
     newCard.classList.add('draggable-resizable');
     newCard.style.position = 'absolute'; // To allow the usage of top and left properties
 
-
+    newCard.style.top = '50%'
+    newCard.style.lefts = '50%'
 
     const img = document.createElement('img');
     img.src = `${Math.floor(Math.random() * (9 - 0 + 1)) + 0}.jpg`;
@@ -176,9 +206,5 @@ $(document).ready(function () {
   const showNewCard = async () => {
     await getNewCard();
   }
- showNewCard(); 
-  showNewCard(); 
-  showNewCard();
-  showNewCard();
-  showNewCard();
+ 
 });
