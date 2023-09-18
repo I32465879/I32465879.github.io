@@ -36,9 +36,14 @@ $(document).ready(function () {
     },
     ondrop: function (event) {
       dropzoneRect = event.target.getBoundingClientRect();
-
+      event.relatedTarget.classList.add('smooooooth');
       event.relatedTarget.style.left = `${event.target.getBoundingClientRect().x-30}px`;
       event.relatedTarget.style.top = `${event.target.getBoundingClientRect().y-30}px`;
+      
+      setTimeout(() => {
+        event.relatedTarget.classList.remove('smooooooth');
+    }, 300);  // 300 milliseconds or 0.3 seconds
+    
     }
 });
 
@@ -180,7 +185,15 @@ $(document).ready(function () {
     menu.appendChild(btnKill);
 
     btnKill.addEventListener('click', function () {
-      document.body.removeChild(newCard);
+     let grave = document.getElementById('graveyard').getBoundingClientRect();
+     newCard.classList.add('smooooooth');
+     newCard.style.left = `${grave.x-30}px`;
+     newCard.style.top = `${grave.y-30}px`;
+     newCard.style.width = `${grave.width}px`;
+     newCard.style.height = `${grave.height}px`;
+      setTimeout(() => {
+        newCard.classList.remove('smooooooth');
+    }, 300);  // 300 milliseconds or 0.3 seconds
     });
 
     newCard.appendChild(menu);
